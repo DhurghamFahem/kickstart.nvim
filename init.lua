@@ -99,6 +99,7 @@ vim.g.have_nerd_font = false
 --  For more options, you can see `:help option-list`
 
 -- Make line numbers default
+vim.opt.relativenumber = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
@@ -577,6 +578,17 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
+        omnisharp = {
+          cmd = {
+            'dotnet',
+            '/home/dhurgham/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll',
+            '--languageserver',
+            '--hostPID',
+            tostring(vim.fn.getpid()),
+          },
+          filetypes = { 'cs', 'vb' },
+          root_dir = require('lspconfig').util.root_pattern('*.csproj', '*.sln'),
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -606,6 +618,7 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
+        'omnisharp',
         'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
