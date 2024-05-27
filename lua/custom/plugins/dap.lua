@@ -64,6 +64,22 @@ return {
         },
       }
 
+      dap.configurations.cs = {
+        {
+          type = 'coreclr',
+          name = 'launch - netcoredbg',
+          request = 'launch',
+          justMyCode = false,
+          stopAtEntry = true,
+          program = function()
+            return vim.fn.input('Path ', vim.fn.getcwd(), 'file')
+          end,
+          cwd = function()
+            return vim.fn.input('WD ', vim.fn.getcwd(), 'file')
+          end,
+        },
+      }
+
       local elixir_ls_debugger = vim.fn.exepath 'elixir-ls-debugger'
       if elixir_ls_debugger ~= '' then
         dap.adapters.mix_task = {
@@ -99,6 +115,7 @@ return {
       vim.keymap.set('n', '<F8>', dap.step_back)
       vim.keymap.set('n', '<F12>', dap.restart)
       vim.keymap.set('n', '<F6>', dap.terminate)
+      vim.keymap.set('n', '<F9>', dap.toggle_breakpoint)
 
       dap.listeners.before.attach.dapui_config = function()
         ui.open()
